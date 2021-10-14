@@ -153,9 +153,10 @@ void loop() {
        
        // ==========================================
        long lostConnect = (currentMillis - lastResponseMillis);
-       Serial.write("#..Reset If lost Connect time (ms) "); Serial.print(lostConnect); Serial.print(" > "); Serial.println(reconnectUdpMillis);
+       Serial.write("#..Reset If lost Connect time (ms) "); 
+       Serial.print(lostConnect); Serial.print(" > "); Serial.println(reconnectUdpMillis);
        // Reconnect to UDP Server After Lose connection for 
-       if(lostConnect >= reconnectUdpMillis ) { software_Reboot();  }
+       if(lostConnect >= reconnectUdpMillis ) { software_Reboot("Lost Conn MQTT Server Response"); }
      
         previousMillis = currentMillis;  
          
@@ -179,7 +180,7 @@ void loop() {
                                
       }
   
-   // if (millis()>= resetMillis) software_Reboot(); // Reset Every Hours
+   // if (millis() > resetEveryHours) software_Reboot("Reboot Every Hours " + String(resetEveryHours/hrMills));
 
    
     wdt_reset(); // wdt reset  
@@ -187,9 +188,9 @@ void loop() {
 // ===================================================================
 // ===================================================================
 
-void software_Reboot() {
+void software_Reboot(String strcase) {
         Serial.println("");
-       Serial.println("software_Reboot .....");  
+       Serial.println("software_Reboot ..... " + strcase);  
        wdt_enable(WDTO_1S);
       while(1)  {  Serial.print("#"); delay(100); }         
 }
